@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS - Smart Waste Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #047857;
+            --secondary: #dcfce7;
+            --accent: #10b981;
+            --text-dark: #0F172A;
+            --text-light: #F8FAFC;
+            --gradient-hero: linear-gradient(135deg, #047857 0%, #10b981 50%, #dcfce7 100%);
+            --gradient-card: linear-gradient(135deg, #ffffff 0%, #dcfce7 100%);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--text-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: var(--text-light);
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 5px;
+            border: 2px solid var(--text-light);
+        }
+
+        .header-bg {
+            background: rgba(4, 120, 87, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .header-bg.scrolled {
+            background: rgba(4, 120, 87, 0.98);
+            padding: 0.5rem 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .hero-bg {
+            background: var(--gradient-hero);
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,128C960,96,1056,96,1152,117.3C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: bottom;
+            z-index: -1;
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 9999px;
+            transition: width 0.5s ease;
+        }
+        .section-title:hover::after {
+            width: 100%;
+        }
+
+        .card {
+            background: var(--gradient-card);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1), 0 4px 10px -2px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(220, 252, 231, 0.5);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(4, 120, 87, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -8px rgba(0,0,0,0.15), 0 8px 15px -6px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: translateY(-50px) scale(0.5); opacity: 0; }
+            60% { transform: translateY(10px) scale(1.1); opacity: 1; }
+            100% { transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-bounceIn {
+            animation: bounceIn 1s cubic-bezier(0.2, 0.5, 0.4, 1.2) forwards;
+        }
+        
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .team-slider-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+            margin-top: 2rem;
+        }
+        
+        .team-slider {
+            position: absolute;
+            width: 200px;
+            height: 250px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            animation: teamSliderRun 30s linear infinite;
+        }
+        
+        @keyframes teamSliderRun {
+            from { transform: translate(-50%, -50%) rotateY(0deg); }
+            to { transform: translate(-50%, -50%) rotateY(360deg); }
+        }
+        
+        .team-slider .item {
+            position: absolute;
+            inset: 0;
+            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(350px);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+        
+        .team-slider:hover {
+            animation-play-state: paused;
+        }
+        
+        .team-slider .item:hover {
+            transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(350px) scale(1.1);
+        }
+        
+        .team-slider .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -3px rgba(0,0,0,0.2);
+            border: 4px solid white;
+            transition: all 0.3s ease;
+        }
+        
+        .team-slider .item .info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .team-slider .item:hover .info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .modal.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px -8px rgba(0,0,0,0.3);
+            animation: bounceIn 0.5s ease-out;
+            background: var(--gradient-card);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .modal-close:hover {
+            color: white;
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        /* Video Styles */
+        .video-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
+            background-color: #e0f2f1;
+            position: relative;
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(16, 185, 129, 0.2) 0%, rgba(4, 120, 87, 0.1) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .video-container:hover video {
+            transform: scale(1.02);
+        }
+        
+        /* Floating elements in hero */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+        
+        /* Monitoring Section */
+        .monitoring-card {
+            background: var(--gradient-card);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(220, 252, 231, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .monitoring-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px -5px rgba(0,0,0,0.15);
+        }
+        
+        .monitoring-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .team-slider {
+                animation-duration: 40s;
+            }
+            
+            .team-slider .item {
+                transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(200px);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-green-50">
+
+    <header id="header" class="header-bg shadow-lg py-4 sticky top-0 z-50">
+        <div class="container flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <a href="#" class="flex items-center space-x-3 text-white">
+                <img src="ATLAS.png" alt="Logo ATLAS" class="w-16 h-16 rounded-full transform hover:scale-110 transition-transform duration-300 animate-pulse-slow">
+                <div class="text-3xl font-bold font-poppins">ATLAS</div>
+            </a>
+            <nav class="flex space-x-6 md:space-x-8 text-lg">
+                <a href="#about-us" class="text-white hover:text-white hover:underline-offset-4 hover:underline transition-all duration-300 font-medium">Tentang Kami</a>
+                <a href="#features" class="text-white hover:text-white hover:underline-offset-4 hover:underline transition-all duration-300 font-medium">Fitur</a>
+                <a href="#monitoring" class="text-white hover:text-white hover:underline-offset-4 hover:underline transition-all duration-300 font-medium">Pemantauan Sampah</a>
+                <a href="#system-animation" class="text-white hover:text-white hover:underline-offset-4 hover:underline transition-all duration-300 font-medium">Demo</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="hero-bg text-white py-24 sm:py-32 text-center relative overflow-hidden">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            
+            <div class="container relative z-10">
+                <img src="ATLAS.png" alt="Logo ATLAS" class="w-32 h-32 sm:w-48 sm:h-48 mx-auto mb-8 animate-bounceIn">
+                <div class="animate-fadeIn" style="animation-delay: 0.5s;">
+                    <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight font-poppins">
+                        Revolusi <span class="text-secondary">Pengelolaan Sampah</span> Masa Depan
+                    </h1>
+                    <p class="text-lg sm:text-xl font-light max-w-2xl mx-auto mb-8">
+                        Dengan teknologi IoT dan AI, kami menciptakan solusi pintar untuk masalah sampah perkotaan. Bergabunglah dengan kami dalam menciptakan dunia yang lebih bersih dan berkelanjutan!
+                    </p>
+                    <a href="#features" class="cta-button inline-block text-lg mx-2 my-2">
+                        <i class="fas fa-info-circle mr-2"></i>Pelajari Lebih Lanjut
+                    </a>
+                    <a href="#system-animation" class="cta-button inline-block text-lg mx-2 my-2" style="background: linear-gradient(to right, #f59e0b, #f97316);">
+                        <i class="fas fa-play-circle mr-2"></i>Tonton Demo
+                    </a>
+                    <!-- Tombol Dashboard Blynk -->
+                    <a href="https://blynk.cloud/dashboard/905081/global/devices/1/organization/905081/devices/3591253/dashboard" target="_blank" class="cta-button inline-block text-lg mx-2 my-2" style="background: linear-gradient(to right, #3b82f6, #1d4ed8);">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard Blynk
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-us" class="py-20 bg-green-50">
+            <div class="container text-center">
+                <h2 class="section-title text-4xl text-gray-800 animate-fadeIn">Tentang Kami</h2>
+                <div class="max-w-4xl mx-auto mt-8 animate-fadeIn" style="animation-delay: 0.2s;">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-12">
+                        Kami adalah tim muda yang bersemangat, bersatu karena visi yang sama: menciptakan dunia yang lebih bersih dan berkelanjutan. Proyek ini adalah wujud nyata dari kepedulian kami terhadap lingkungan dan keyakinan bahwa teknologi dapat menjadi jembatan menuju solusi.
+                    </p>
+                    <div class="team-slider-container">
+                        <div class="team-slider">
+                            <div class="item" style="--position: 1; --quantity: 4;" data-name="RIFQI ARYANDINATA" data-role="Ketua Proyek" data-desc="Rifqi adalah pemimpin visioner tim kami, bertanggung jawab mengarahkan proyek dari konsep hingga implementasi. Dengan latar belakang teknik dan passion terhadap lingkungan, ia memastikan setiap aspek proyek selaras dengan visi kami untuk masa depan yang lebih bersih.">
+                                <img src="RQI.jpg" alt="Foto Rifqi">
+                                <div class="info">
+                                    <p class="font-semibold text-lg">RIFQI ARYANDINATA</p>
+                                    <p class="text-sm opacity-80">Ketua</p>
+                                </div>
+                            </div>
+                            <div class="item" style="--position: 2; --quantity: 4;" data-name="MUHAMMAD SAPUTRA" data-role="Pengembang & Hardware" data-desc="Muhammad adalah anggota kunci tim kami, fokus pada pengembangan teknologi inti dan sensor IoT. Keahliannya dalam pemrograman dan elektronik memastikan sistem kami berjalan dengan andal dan efisien.">
+                                <img src="M.jpg" alt="Foto Muhammad">
+                                <div class="info">
+                                    <p class="font-semibold text-lg">MUHAMMAD SAPUTRA</p>
+                                    <p class="text-sm opacity-80">Pengembang</p>
+                                </div>
+                            </div>
+                            <div class="item" style="--position: 3; --quantity: 4;" data-name="Ayu Amelia Putri" data-role="Desainer UI/UX" data-desc="Ayu Amelia Puri ahli dalam desain antarmuka pengguna dan pengalaman pengguna, memastikan aplikasi kami intuitif dan mudah digunakan. Desainnya yang elegan dan fungsional membuat interaksi dengan sistem ATLAS menjadi pengalaman yang menyenangkan.">
+                                <img src="D.jpg" alt="Foto Tim 3">
+                                <div class="info">
+                                    <p class="font-semibold text-lg">Ayu Amelia Putri</p>
+                                    <p class="text-sm opacity-80">Desainer UI/UX</p>
+                                </div>
+                            </div>
+                            <div class="item" style="--position: 4; --quantity: 4;" data-name="ANGGOTA 4" data-role="Analisis Data" data-desc="Anggota 4 adalah spesialis dalam analisis data dan algoritma, mengoptimalkan rute pengumpulan sampah. Dengan pendekatan data-driven, ia memastikan sistem kami terus meningkat efisiensinya dari waktu ke waktu.">
+                                <img src="https://placehold.co/150x150/dcfce7/047857?text=Tim+4" alt="Foto Tim 4">
+                                <div class="info">
+                                    <p class="font-semibold text-lg">ANGGOTA 4</p>
+                                    <p class="text-sm opacity-80">Anggota</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="py-20">
+            <div class="container text-center">
+                <h2 class="section-title text-4xl text-gray-800 animate-fadeIn">Fitur-Fitur Unggulan</h2>
+                <p class="text-lg text-gray-700 max-w-4xl mx-auto mt-8 mb-16 animate-fadeIn" style="animation-delay: 0.2s;">
+                    Jelajahi fitur-fitur utama dari Tong Sampah Cerdas kami yang menjadikannya solusi revolusioner.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div class="card p-8 text-center animate-fadeIn" style="animation-delay: 0.4s;">
+                        <div class="card-content">
+                            <div class="text-6xl mb-4 transform hover:scale-110 transition-transform duration-300">🗑️</div>
+                            <h3 class="text-2xl font-semibold mb-2">Deteksi Otomatis</h3>
+                            <p class="text-gray-600 leading-relaxed">Sensor canggih mendeteksi tingkat kepenuhan sampah secara real-time dan akurat.</p>
+                        </div>
+                    </div>
+                    <div class="card p-8 text-center animate-fadeIn" style="animation-delay: 0.6s;">
+                        <div class="card-content">
+                            <div class="text-6xl mb-4 transform hover:scale-110 transition-transform duration-300">🔔</div>
+                            <h3 class="text-2xl font-semibold mb-2">Notifikasi Cerdas</h3>
+                            <p class="text-gray-600 leading-relaxed">Otomatis mengirim notifikasi ke petugas kebersihan saat tong sampah mencapai kapasitas penuh.</p>
+                        </div>
+                    </div>
+                    <div class="card p-8 text-center animate-fadeIn" style="animation-delay: 0.8s;">
+                        <div class="card-content">
+                            <div class="text-6xl mb-4 transform hover:scale-110 transition-transform duration-300">📱</div>
+                            <h3 class="text-2xl font-semibold mb-2">Aplikasi Pendukung</h3>
+                            <p class="text-gray-600 leading-relaxed">Pantau semua status tong sampah, rute, dan data historis melalui aplikasi seluler yang intuitif.</p>
+                        </div>
+                    </div>
+                    <div class="card p-8 text-center animate-fadeIn" style="animation-delay: 1s;">
+                        <div class="card-content">
+                            <div class="text-6xl mb-4 transform hover:scale-110 transition-transform duration-300">🛡️</div>
+                            <h3 class="text-2xl font-semibold mb-2">Keamanan Data Terjamin</h3>
+                            <p class="text-gray-600 leading-relaxed">Menjamin semua data yang dikumpulkan terenkripsi dan aman, menjaga privasi dan integritas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="monitoring" class="py-20 bg-green-100">
+            <div class="container text-center">
+                <h2 class="section-title text-4xl text-gray-800 animate-fadeIn">Pemantauan Sampah</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto mt-8 mb-12 animate-fadeIn" style="animation-delay: 0.2s;">
+                    Pantau status sampah di berbagai lokasi secara real-time dengan sistem ATLAS kami melalui platform Blynk.
+                </p>
+                
+                <div class="monitoring-card animate-fadeIn" style="animation-delay: 0.4s;">
+                    <div class="monitoring-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Dashboard Pemantauan Real-time</h3>
+                    <p class="text-gray-600 mb-6">Akses dashboard Blynk untuk memantau status tong sampah di berbagai lokasi secara real-time, melihat data historis, dan menerima notifikasi.</p>
+                    <a href="https://blynk.cloud/dashboard/905081/global/devices/1/organization/905081/devices/3591253/dashboard" target="_blank" class="cta-button inline-block text-lg">
+                        <i class="fas fa-external-link-alt mr-2"></i>Akses Dashboard Blynk
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="system-animation" class="py-20 bg-green-50">
+            <div class="container text-center">
+                <h2 class="section-title text-4xl text-gray-800 animate-fadeIn">Lihat Sistem Bekerja!</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto mt-8 mb-12 animate-fadeIn" style="animation-delay: 0.2s;">
+                    Saksikan tong sampah pintar kami terisi penuh, mengaktifkan alarm, dan memanggil robot pengumpul sampah untuk datang dan mengosongkannya.
+                </p>
+                <div class="video-container animate-fadeIn" style="animation-delay: 0.4s;">
+                    <video controls autoplay loop muted>
+                        <source src="LOQ_20250712_212850.mp4" type="video/mp4">
+                        Maaf, peramban Anda tidak mendukung pemutar video.
+                    </video>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="container">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">ATLAS</h3>
+                    <p class="mb-4">Mewujudkan masa depan yang bersih, satu tong sampah cerdas pada satu waktu.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-accent transition-colors duration-300">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-accent transition-colors duration-300">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-accent transition-colors duration-300">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-accent transition-colors duration-300">
+                            <i class="fab fa-linkedin-in text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Tautan Cepat</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about-us" class="text-gray-300 hover:text-white transition-colors duration-300">Tentang Kami</a></li>
+                        <li><a href="#features" class="text-gray-300 hover:text-white transition-colors duration-300">Fitur</a></li>
+                        <li><a href="#monitoring" class="text-gray-300 hover:text-white transition-colors duration-300">Pemantauan Sampah</a></li>
+                        <li><a href="#system-animation" class="text-gray-300 hover:text-white transition-colors duration-300">Demo</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Kontak</h3>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt mr-2 text-accent"></i> Jl. Teknologi No. 123, Kota Inovasi</p>
+                    <p class="mb-2"><i class="fas fa-phone mr-2 text-accent"></i> +62 812 3456 7890</p>
+                    <p class="mb-2"><i class="fas fa-envelope mr-2 text-accent"></i> info@atlas-smartwaste.com</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2024 ATLAS. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="member-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3 id="modal-name" class="text-3xl font-bold text-gray-800 mb-2"></h3>
+            <p id="modal-role" class="text-lg text-gray-600 mb-4"></p>
+            <p id="modal-description" class="text-gray-700 leading-relaxed"></p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                const offset = 80; // Header height
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = targetElement.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-title, .card, .monitoring-card').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('member-modal');
+        const modalName = document.getElementById('modal-name');
+        const modalRole = document.getElementById('modal-role');
+        const modalDescription = document.getElementById('modal-description');
+        const modalClose = document.querySelector('.modal-close');
+        const teamItems = document.querySelectorAll('.team-slider .item');
+
+        teamItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const name = item.dataset.name;
+                const role = item.dataset.role;
+                const desc = item.dataset.desc;
+
+                modalName.textContent = name;
+                modalRole.textContent = role;
+                modalDescription.textContent = desc;
+
+                modal.classList.add('is-visible');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('is-visible');
+            document.body.style.overflow = 'auto';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('is-visible');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Pause team slider on hover
+        const teamSlider = document.querySelector('.team-slider');
+        teamSlider.addEventListener('mouseenter', () => {
+            teamSlider.style.animationPlayState = 'paused';
+        });
+        
+        teamSlider.addEventListener('mouseleave', () => {
+            teamSlider.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>
